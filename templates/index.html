@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Review Forum</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Product Review Forum</h1>
+
+    {% if user_id %}
+        <p>Welcome! <a href="/logout">Logout</a></p>
+    {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+    {% endif %}
+
+    <h2>Reviews:</h2>
+    <ul>
+        {% for rating, review in reviews %}
+            <li><strong>Rating:</strong> {{ rating|safe }}, <strong>Review:</strong> {{ review|safe }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Add a Review:</h2>
+    <form method="POST" action="/submit">
+        <label for="rating">Rating:</label>
+        <select name="rating" id="rating" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+        </select>
+        <br>
+        <label for="review_text">Review:</label>
+        <textarea name="review_text" id="review_text" placeholder="Enter your review" required></textarea>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>
