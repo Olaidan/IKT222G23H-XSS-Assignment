@@ -30,14 +30,16 @@ def index():
 
     user_id = session.get('user_id')
 
-    return render_template('index.html', reviews=reviews, user_id=user_id)
+    sanitized_reviews = [(rating, review.replace('<', '&lt;')) for rating, review in reviews]
+
+    return render_template('index.html', reviews=sanitized_reviews, user_id=user_id)
 
 
 @app.route('/submit', methods=['POST'])
 def submit_review():
     if request.method == 'POST':
-        rating = request.form['rating']
-        review_text = request.form['review_text']
+        rating = request.form.get('rating')
+        review_text = request.form.get('review_text')
         db = get_db()
         cursor = db.cursor()
         cursor.execute("INSERT INTO reviews (rating, review) VALUES (?, ?)", (rating, review_text))
@@ -49,8 +51,8 @@ def submit_review():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form.get('username')
+        password = request.form.get('password')
 
         if username and password:
             db = get_db()
@@ -70,8 +72,8 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form.get('username')
+        password = request.form.get('password')
 
         if username and password:
             db = get_db()

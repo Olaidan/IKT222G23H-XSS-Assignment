@@ -14,11 +14,14 @@
     {% endif %}
 
     <h2>Reviews:</h2>
-    <ul>
-        {% for rating, review in reviews %}
-            <li><strong>Rating:</strong> {{ rating|safe }}, <strong>Review:</strong> {{ review|safe }}</li>
-        {% endfor %}
-    </ul>
+<ul>
+    {% for rating, review in reviews %}
+        <li>
+            <strong>Rating:</strong> {{ rating|e }},
+            <strong>Review:</strong> {{ review|e }}
+        </li>
+    {% endfor %}
+</ul>
 
     <h2>Add a Review:</h2>
     <form method="POST" action="/submit">
